@@ -28,54 +28,77 @@
 
 // function getDepth(obj, count = 1) {
 //     for (let key in obj) {
-//         if (typeof obj[key] === 'object') {
+//         if (obj !== null && typeof obj[key] === 'object') {
 //         count ++;
 //         return getDepth(obj[key], count);
 //         }
 //     }
-
-//     return count
+//     return count;
 // }
 // console.log(getDepth(something));
 
 
 // 2. Написать ф-ю, принимающую 2 объекта и выводящую число обозначающее количество несовпадений в них. Покрыть тестами
 
-const first = {
-    a: {
-        a: {
-            a: 3,
-        },
-        b: 1,
-    },
+const image = {
+    heigth: 45,
+    width: 60,
+    color: 'yellow',
+    theme: 'landscape',
 };
 
-const second = {
-    a: {
-        a: {
-            a: {
-                a: {
-                    a: 6,
-                },
-                b: 3,
-            },
-        },
-        b: 1,
-    },
-}
+const cat = {
+    heigth: 45,
+    width: 60,
+    'eyes color': 'green eyes',
+    'hair color': 'grey',
+};
 
-function getDiscrepancy(obj1 = first, obj2 = second) {
-    for (let key in obj1 && key in obj2) {
-        if (typeof obj1[key] === 'object' && typeof obj2[key] === 'object') {
-        count ++;
-        return getDiscrepancy(obj1[key], count);
-        return getDiscrepancy(obj2[key], count);
+
+function getDiscrepancy(obj1, obj2) {
+    if (!obj2 || Object.prototype.toString.call(obj2) !== '[object Object]') {
+        return obj1;
+    }
+
+    let diffs = {};
+    let key;
+    let compare = function (item1, item2, key) {
+
+        let type1 = Object.prototype.toString.call(item1);
+        let type2 = Object.prototype.toString.call(item2);
+
+        if (type2 === '[object Undefined]') {
+            diffs[key] = null;
+            return;
+        }
+        if (type1 !== type2) {
+            diffs[key] = item2;
+            return;
+        }
+        if (type1 === '[object Object]') {
+            let objDiff = getDiscrepancy(item1, item2);
+            if (Object.keys(objDiff).length > 0) {
+                diffs[key] = objDiff;
+            }
+            return;
+        }
+    };
+
+    for ( key in obj1) {
+        if (obj1.hasOwnProperty(key)) {
+            compare(obj1[key], obj2[key], key); //сравнение обьектов
         }
     }
-    if (obj1[key] !== obj2[key]) {
-        count++;
-    }
 
-    return count
-}
-console.log(getDiscrepancy(obj1, obj2));
+    for (key in obj2) {
+        if (obj2.hasOwnProperty(key)) {
+            if (!obj1[key] && obj1[key] !== obj2[key]) {
+                diffs[key] = obj2[key];
+            }
+        }
+    }
+    console.log(diffs);
+    return Object.keys(diffs).length;
+};
+
+console.log(getDiscrepancy(cat, image));
