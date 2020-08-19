@@ -1,4 +1,4 @@
-// 1. Написать ф-ю, принимающую объект и возвращающую число означающее максимальную глубину вложенности объектов в ней. Покрыть тестами
+//1. Написать ф-ю, принимающую объект и возвращающую число означающее максимальную глубину вложенности объектов в ней. Покрыть тестами
 
 // const something = {
 //     a: {
@@ -45,6 +45,7 @@ const image = {
     width: 60,
     color: 'yellow',
     theme: 'landscape',
+	name: 'ololo',
 };
 
 const cat = {
@@ -52,10 +53,11 @@ const cat = {
     width: 60,
     'eyes color': 'green eyes',
     'hair color': 'grey',
+	name: 'Merlin',
 };
 
-
 function getDiscrepancy(obj1, obj2) {
+
     if (!obj2 || Object.prototype.toString.call(obj2) !== '[object Object]') {
         return obj1;
     }
@@ -72,7 +74,7 @@ function getDiscrepancy(obj1, obj2) {
             return;
         }
         if (type1 !== type2) {
-            diffs[key] = item2;
+            diffs[key] = item2; 
             return;
         }
         if (type1 === '[object Object]') {
@@ -102,3 +104,7 @@ function getDiscrepancy(obj1, obj2) {
 };
 
 console.log(getDiscrepancy(cat, image));
+
+
+
+
